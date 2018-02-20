@@ -1,0 +1,13 @@
+{
+  "name": "farsil/wp-nonce",
+  "license": "MIT",
+  "type": "wordpress-plugin",
+  "description": "Object oriented implementation of Wordpress nonces",
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/farsil/wp-nonce"
+    }
+  ],
+  "require": {}
+}
