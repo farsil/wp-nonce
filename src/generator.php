@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: silver
- * Date: 2/20/18
- * Time: 7:07 PM
- */
 
 namespace Wordpress\Nonce;
 
