@@ -23,19 +23,19 @@ class NonceHasher
         $this->lifetime = $lifetime;
     }
 
-    public function get_action() {
+    public function getAction() {
         return $this->action;
     }
 
-    public function get_lifetime() {
+    public function getLifetime() {
         return $this->lifetime;
     }
 
-    public function get_user() {
+    public function getUser() {
         return $this->user;
     }
 
-    public function get_token() {
+    public function getToken() {
         return $this->token;
     }
 

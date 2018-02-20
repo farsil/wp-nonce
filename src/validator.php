@@ -59,13 +59,13 @@ class NonceValidator extends NonceHasher {
 
         do_action(
             'wp_verify_nonce_failed',
-            $nonce, $this->get_action(), $this->get_user(), $this->get_token()
+            $nonce, $this->getAction(), $this->getUser(), $this->getToken()
         );
         return false;
     }
 
-    public function check_admin_referer($query_arg = "_wpnonce") {
-        if ($this->get_action() == -1) {
+    public function checkAdminReferer($query_arg = "_wpnonce") {
+        if ($this->getAction() == -1) {
             global $wp_version;
 
             _doing_it_wrong(
@@ -82,19 +82,19 @@ class NonceValidator extends NonceHasher {
         $result = isset($_REQUEST[$query_arg]) ?
             $this->verify($_REQUEST[$query_arg]) : false;
 
-        do_action('check_admin_referer', $this->get_action(), $result);
+        do_action('check_admin_referer', $this->getAction(), $result);
 
         if (!$result &&
-            !($this->get_action() && strpos($referer, $admin_url) === 0)) {
-            parent::ays($this->get_action());
+            !($this->getAction() && strpos($referer, $admin_url) === 0)) {
+            self::ays($this->getAction());
             die();
         }
 
         return $result;
     }
 
-    public function check_ajax_referer($query_arg = "_wpnonce", $die = true) {
-        if ($this->get_action() == -1) {
+    public function checkAjaxReferer($query_arg = "_wpnonce", $die = true) {
+        if ($this->getAction() == -1) {
             global $wp_version;
 
             _doing_it_wrong(
@@ -116,7 +116,7 @@ class NonceValidator extends NonceHasher {
         }
 
         $result = $this->verify($nonce);
-        do_action('check_ajax_referer', $this->get_action(), $result);
+        do_action('check_ajax_referer', $this->getAction(), $result);
 
         if ($die && $result === false) {
             if (wp_doing_ajax()) {

@@ -18,9 +18,9 @@ class NonceGenerator extends NonceHasher {
         return $this->hash($this->tick());
     }
 
-    public function url($actionurl, $name = "_wpnonce") {
-        $actionurl = str_replace('&amp;', '&', $actionurl);
-        return esc_html(add_query_arg($name, $this->create(), $actionurl));
+    public function url($action_url, $name = "_wpnonce") {
+        $action_url = str_replace('&amp;', '&', $action_url);
+        return esc_html(add_query_arg($name, $this->create(), $action_url));
     }
 
     public function field($name = "_wpnonce", $referer = true, $echo = true) {
