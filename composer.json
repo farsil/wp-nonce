@@ -1,13 +1,21 @@
 {
   "name": "farsil/wp-nonce",
   "license": "MIT",
-  "type": "wordpress-plugin",
   "description": "Object oriented implementation of Wordpress nonces",
+  "keywords": ["oop", "nonce", "wordpress"],
   "repositories": [
     {
       "type": "vcs",
       "url": "https://github.com/farsil/wp-nonce"
     }
   ],
-  "require": {}
+  "authors": [
+    {
+      "name": "Marco Buzzanca",
+      "email": "marco.bzn@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.0"
+  }
 }
