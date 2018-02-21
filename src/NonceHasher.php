@@ -49,8 +49,8 @@ class NonceHasher {
 
         return substr(
             wp_hash( $tick . '|' . $this->action . '|' . $uid .
-                     '|' .$this->token,
-            'nonce' ),
+                     '|' . $this->token,
+                'nonce' ),
             - 12, 10
         );
     }
