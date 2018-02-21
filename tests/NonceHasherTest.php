@@ -47,19 +47,23 @@ class NonceHasherTest extends TestCase {
             ],
         ];
 
-        foreach ( $cases as $case ) {
+        foreach ( $cases as $n => $case ) {
             if ( $case["hasher"] instanceof NonceHasher ) {
-                $this->assertAttributeEquals( $case["lifetime"], "lifetime",
-                    $case["hasher"], "Lifetime not equal." );
+                $this->assertAttributeEquals( $case["lifetime"],
+                    "lifetime", $case["hasher"],
+                    sprintf( "Case #%d: Lifetime not equal.", $n + 1 ) );
 
-                $this->assertAttributeEquals( $case["action"], "action",
-                    $case["hasher"], "Action not equal." );
+                $this->assertAttributeEquals( $case["action"],
+                    "action", $case["hasher"],
+                    sprintf( "Case #%d: Action not equal.", $n + 1 ) );
 
-                $this->assertAttributeEquals( $case["user"], "user",
-                    $case["hasher"], "User not equal." );
+                $this->assertAttributeEquals( $case["user"],
+                    "user", $case["hasher"],
+                    sprintf( "Case #%d: User not equal.", $n + 1 ) );
 
-                $this->assertAttributeEquals( $case["token"], "token",
-                    $case["hasher"], "Token not equal." );
+                $this->assertAttributeEquals( $case["token"],
+                    "token", $case["hasher"],
+                    sprintf( "Case #%d: Token not equal.", $n + 1 ) );
             }
         }
     }
@@ -88,44 +92,64 @@ class NonceHasherTest extends TestCase {
 
         $cases = [
             [
-                "hasher"   => new NonceHasher( "test" ),
-                "closure"  => null,
-                "tick"     => 1,
-                "expected" => "390ffd9ed8",
+                "hasher"  => new NonceHasher( "test" ),
+                "closure" => null,
+                "tick"    => 1,
+                "action"  => 'test',
+                "token"   => wp_get_session_token(),
+                "uid"     => 0,
             ],
             [
-                "hasher"   => new NonceHasher( "test" ),
-                "closure"  => null,
-                "tick"     => 2,
-                "expected" => "6ee19b817c",
+                "hasher"  => new NonceHasher( "test" ),
+                "closure" => null,
+                "tick"    => 2,
+                "action"  => 'test',
+                "token"   => wp_get_session_token(),
+                "uid"     => 0,
             ],
             [
-                "hasher"   => new NonceHasher( "test" ),
-                "closure"  => $closure,
-                "tick"     => 1,
-                "expected" => "bda33ff15b",
+                "hasher"  => new NonceHasher( "another-test" ),
+                "closure" => null,
+                "tick"    => 2,
+                "action"  => 'another-test',
+                "token"   => wp_get_session_token(),
+                "uid"     => 0,
             ],
             [
-                "hasher"   => new NonceHasher( "test", 20, $mock_user ),
-                "closure"  => null,
-                "tick"     => 1,
-                "expected" => "0babebeae1",
+                "hasher"  => new NonceHasher( "test" ),
+                "closure" => $closure,
+                "tick"    => 1,
+                "action"  => 'test',
+                "token"   => wp_get_session_token(),
+                "uid"     => 1,
             ],
             [
-                "hasher"   => new NonceHasher( "test", 20, $mock_user ),
-                "closure"  => null,
-                "tick"     => 2,
-                "expected" => "2ae21e13ec",
+                "hasher"  => new NonceHasher( "test", 20, $mock_user ),
+                "closure" => null,
+                "tick"    => 1,
+                "action"  => 'test',
+                "token"   => wp_get_session_token(),
+                "uid"     => 2,
             ],
             [
-                "hasher"   => new NonceHasher( "test", 20, $mock_user ),
-                "closure"  => $closure,
-                "tick"     => 1,
-                "expected" => "0babebeae1",
+                "hasher"  => new NonceHasher( "test", 20, $mock_user ),
+                "closure" => null,
+                "tick"    => 2,
+                "action"  => 'test',
+                "token"   => wp_get_session_token(),
+                "uid"     => 2,
+            ],
+            [
+                "hasher"  => new NonceHasher( "test", 20, $mock_user ),
+                "closure" => $closure,
+                "tick"    => 1,
+                "action"  => 'test',
+                "token"   => wp_get_session_token(),
+                "uid"     => 2,
             ],
         ];
 
-        foreach ( $cases as $case ) {
+        foreach ( $cases as $n => $case ) {
             if ( $case["hasher"] instanceof NonceHasher ) {
                 $hash = self::accessibleHash( $case["hasher"] );
                 if ( $hash === false ) {
@@ -138,8 +162,15 @@ class NonceHasherTest extends TestCase {
                     add_filter( "nonce_user_logged_out", $case["closure"] );
                 }
 
-                $this->assertEquals( $case["expected"],
-                    $hash( $case["tick"] ), "Hash result not equal." );
+                $expected = substr(
+                    wp_hash( $case['tick'] . '|' . $case['action'] . '|' .
+                             $case['uid'] . '|' . $case['token'],
+                        'nonce' ),
+                    - 12, 10
+                );
+
+                $this->assertEquals( $expected, $hash( $case["tick"] ),
+                    sprintf( "Case #%d: Hash result not equal.", $n + 1 ) );
 
                 if ( ! is_null( $case["closure"] ) ) {
                     remove_filter( "nonce_user_logged_out", $case["closure"] );
@@ -189,19 +220,23 @@ class NonceHasherTest extends TestCase {
         ];
 
 
-        foreach ( $cases as $case ) {
+        foreach ( $cases as $n => $case ) {
             if ( $case["hasher"] instanceof NonceHasher ) {
                 $this->assertEquals( $case["lifetime"],
-                    $case["hasher"]->getLifetime(), "Lifetime not equal." );
+                    $case["hasher"]->getLifetime(),
+                    sprintf( "Case #%d: Lifetime not equal.", $n + 1 ) );
 
                 $this->assertEquals( $case["action"],
-                    $case["hasher"]->getAction(), "Action not equal." );
+                    $case["hasher"]->getAction(),
+                    sprintf( "Case #%d: Action not equal.", $n + 1 ) );
 
                 $this->assertEquals( $case["user"],
-                    $case["hasher"]->getUser(), "User not equal." );
+                    $case["hasher"]->getUser(),
+                    sprintf( "Case #%d: User not equal.", $n + 1 ) );
 
                 $this->assertEquals( $case["token"],
-                    $case["hasher"]->getToken(), "Token not equal." );
+                    $case["hasher"]->getToken(),
+                    sprintf( "Case #%d: Token not equal.", $n + 1 ) );
             }
         }
     }
@@ -234,7 +269,7 @@ class NonceHasherTest extends TestCase {
             ]
         ];
 
-        foreach ( $cases as $case ) {
+        foreach ( $cases as $n => $case ) {
             if ( $case["hasher"] instanceof NonceHasher ) {
                 if ( ! is_null( $case["closure"] ) ) {
                     add_filter( "nonce_life", $case["closure"] );
@@ -242,7 +277,7 @@ class NonceHasherTest extends TestCase {
 
                 $expected = ceil( time() / ( $case["lifetime"] / 2 ) );
                 $this->assertEquals( $expected, $case["hasher"]->tick(),
-                    "Tick result is not equal." );
+                    sprintf( "Case #%d: Tick result is not equal.", $n + 1 ) );
 
                 if ( ! is_null( $case["closure"] ) ) {
                     remove_filter( "nonce_life", $case["closure"] );
