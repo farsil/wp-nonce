@@ -2,8 +2,8 @@
 
 namespace Wordpress\Nonce\Test;
 
-use Wordpress\Nonce\NonceGenerator;
 use PHPUnit\Framework\TestCase;
+use Wordpress\Nonce\NonceGenerator;
 
 class NonceGeneratorTest extends TestCase {
     public function test__construct() {
@@ -47,19 +47,23 @@ class NonceGeneratorTest extends TestCase {
             if ( $case["generator"] instanceof NonceGenerator ) {
                 $this->assertAttributeEquals( $case["lifetime"],
                     "lifetime", $case["generator"],
-                    sprintf( "Case #%d: Lifetime not equal.", $n + 1 ) );
+                    sprintf( "Case #%d: Lifetime not equal.", $n + 1 )
+                );
 
                 $this->assertAttributeEquals( $case["action"],
                     "action", $case["generator"],
-                    sprintf( "Case #%d: Action not equal.", $n + 1 ) );
+                    sprintf( "Case #%d: Action not equal.", $n + 1 )
+                );
 
                 $this->assertAttributeEquals( $case["user"],
                     "user", $case["generator"],
-                    sprintf( "Case #%d: User not equal.", $n + 1 ) );
+                    sprintf( "Case #%d: User not equal.", $n + 1 )
+                );
 
                 $this->assertAttributeEquals( $case["token"],
                     "token", $case["generator"],
-                    sprintf( "Case #%d: Token not equal.", $n + 1 ) );
+                    sprintf( "Case #%d: Token not equal.", $n + 1 )
+                );
             }
         }
     }

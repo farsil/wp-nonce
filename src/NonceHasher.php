@@ -40,10 +40,6 @@ class NonceHasher {
         return ceil( time() / ( $lifetime / 2 ) );
     }
 
-    public static function hash( $data ) {
-        return substr( wp_hash( $data, 'nonce' ), - 12, 10 );
-    }
-
     protected function getNonce( $tick ) {
         $uid = (int) $this->user->ID;
         if ( ! $uid ) {
@@ -53,5 +49,9 @@ class NonceHasher {
 
         return self::hash( $tick . '|' . $this->action . '|' . $uid .
                            '|' . $this->token );
+    }
+
+    public static function hash( $data ) {
+        return substr( wp_hash( $data, 'nonce' ), - 12, 10 );
     }
 }

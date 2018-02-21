@@ -2,11 +2,10 @@
 
 namespace Wordpress\Nonce\Test;
 
-use Wordpress\Nonce\NonceHasher;
 use PHPUnit\Framework\TestCase;
+use Wordpress\Nonce\NonceHasher;
 
 class NonceHasherTest extends TestCase {
-
     public function test__construct() {
         $mock_user     = new \stdClass();
         $mock_user->ID = 2;
@@ -66,20 +65,6 @@ class NonceHasherTest extends TestCase {
                     sprintf( "Case #%d: Token not equal.", $n + 1 )
                 );
             }
-        }
-    }
-
-    private static function accessibleGetNonce( $hasher ) {
-        try {
-            $method = new \ReflectionMethod(
-                'Wordpress\Nonce\NonceHasher', 'getNonce' );
-            $method->setAccessible( true );
-
-            return function ( $tick ) use ( $method, $hasher ) {
-                return $method->invokeArgs( $hasher, [ $tick ] );
-            };
-        } catch ( \ReflectionException $e ) {
-            return false;
         }
     }
 
@@ -205,6 +190,20 @@ class NonceHasherTest extends TestCase {
         }
     }
 
+    private static function accessibleGetNonce( $hasher ) {
+        try {
+            $method = new \ReflectionMethod(
+                'Wordpress\Nonce\NonceHasher', 'getNonce' );
+            $method->setAccessible( true );
+
+            return function ( $tick ) use ( $method, $hasher ) {
+                return $method->invokeArgs( $hasher, [ $tick ] );
+            };
+        } catch ( \ReflectionException $e ) {
+            return false;
+        }
+    }
+
     public function testAccessors() {
         $mock_user     = new \stdClass();
         $mock_user->ID = 2;
@@ -241,7 +240,6 @@ class NonceHasherTest extends TestCase {
                 "token"    => $mock_token
             ],
         ];
-
 
         foreach ( $cases as $n => $case ) {
             if ( $case["hasher"] instanceof NonceHasher ) {

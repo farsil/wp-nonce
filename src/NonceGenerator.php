@@ -10,16 +10,16 @@ class NonceGenerator extends NonceHasher {
         parent::__construct( $action, $lifetime, $user, $token );
     }
 
-    public function generate() {
-        return $this->getNonce( $this->tick() );
-    }
-
     public function url( $action_url, $name = "_wpnonce" ) {
         $action_url = str_replace( '&amp;', '&', $action_url );
 
         return esc_html(
             add_query_arg( $name, $this->generate(), $action_url )
         );
+    }
+
+    public function generate() {
+        return $this->getNonce( $this->tick() );
     }
 
     public function field( $name = "_wpnonce", $referer = true, $echo = true ) {
