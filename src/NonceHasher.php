@@ -40,18 +40,18 @@ class NonceHasher {
         return ceil( time() / ( $lifetime / 2 ) );
     }
 
-    protected function hash( $tick ) {
+    public static function hash( $data ) {
+        return substr( wp_hash( $data, 'nonce' ), - 12, 10 );
+    }
+
+    protected function getNonce( $tick ) {
         $uid = (int) $this->user->ID;
         if ( ! $uid ) {
             $uid = apply_filters( 'nonce_user_logged_out',
                 $uid, $this->action );
         }
 
-        return substr(
-            wp_hash( $tick . '|' . $this->action . '|' . $uid .
-                     '|' . $this->token,
-                'nonce' ),
-            - 12, 10
-        );
+        return self::hash( $tick . '|' . $this->action . '|' . $uid .
+                           '|' . $this->token );
     }
 }
