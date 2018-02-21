@@ -12,30 +12,27 @@ class NonceHasherTest extends TestCase {
         $mock_user->ID = 2;
         $mock_token    = "h324abc4";
 
-        $current_user  = wp_get_current_user();
-        $session_token = wp_get_session_token();
-
         $cases = [
             [
                 "hasher"   => new NonceHasher( "test" ),
                 "action"   => "test",
                 "lifetime" => DAY_IN_SECONDS,
-                "user"     => $current_user,
-                "token"    => $session_token
+                "user"     => wp_get_current_user(),
+                "token"    => wp_get_session_token()
             ],
             [
                 "hasher"   => new NonceHasher( "test", 20 ),
                 "action"   => "test",
                 "lifetime" => 20,
-                "user"     => $current_user,
-                "token"    => $session_token
+                "user"     => wp_get_current_user(),
+                "token"    => wp_get_session_token()
             ],
             [
                 "hasher"   => new NonceHasher( "test", 20, $mock_user ),
                 "action"   => "test",
                 "lifetime" => 20,
                 "user"     => $mock_user,
-                "token"    => $session_token
+                "token"    => wp_get_session_token()
             ],
             [
                 "hasher"   => new NonceHasher( "test", 20, $mock_user,
@@ -97,7 +94,7 @@ class NonceHasherTest extends TestCase {
                 "tick"    => 1,
                 "action"  => 'test',
                 "token"   => wp_get_session_token(),
-                "uid"     => 0,
+                "uid"     => wp_get_current_user()->ID,
             ],
             [
                 "hasher"  => new NonceHasher( "test" ),
@@ -105,7 +102,7 @@ class NonceHasherTest extends TestCase {
                 "tick"    => 2,
                 "action"  => 'test',
                 "token"   => wp_get_session_token(),
-                "uid"     => 0,
+                "uid"     => wp_get_current_user()->ID,
             ],
             [
                 "hasher"  => new NonceHasher( "another-test" ),
@@ -113,7 +110,7 @@ class NonceHasherTest extends TestCase {
                 "tick"    => 2,
                 "action"  => 'another-test',
                 "token"   => wp_get_session_token(),
-                "uid"     => 0,
+                "uid"     => wp_get_current_user()->ID,
             ],
             [
                 "hasher"  => new NonceHasher( "test" ),
@@ -121,7 +118,7 @@ class NonceHasherTest extends TestCase {
                 "tick"    => 1,
                 "action"  => 'test',
                 "token"   => wp_get_session_token(),
-                "uid"     => 1,
+                "uid"     => wp_get_current_user()->ID + 1,
             ],
             [
                 "hasher"  => new NonceHasher( "test", 20, $mock_user ),
@@ -129,7 +126,7 @@ class NonceHasherTest extends TestCase {
                 "tick"    => 1,
                 "action"  => 'test',
                 "token"   => wp_get_session_token(),
-                "uid"     => 2,
+                "uid"     => $mock_user->ID,
             ],
             [
                 "hasher"  => new NonceHasher( "test", 20, $mock_user ),
@@ -137,7 +134,7 @@ class NonceHasherTest extends TestCase {
                 "tick"    => 2,
                 "action"  => 'test',
                 "token"   => wp_get_session_token(),
-                "uid"     => 2,
+                "uid"     => $mock_user->ID,
             ],
             [
                 "hasher"  => new NonceHasher( "test", 20, $mock_user ),
@@ -145,7 +142,7 @@ class NonceHasherTest extends TestCase {
                 "tick"    => 1,
                 "action"  => 'test',
                 "token"   => wp_get_session_token(),
-                "uid"     => 2,
+                "uid"     => $mock_user->ID,
             ],
         ];
 
@@ -184,30 +181,27 @@ class NonceHasherTest extends TestCase {
         $mock_user->ID = 2;
         $mock_token    = "h324abc4";
 
-        $current_user  = wp_get_current_user();
-        $session_token = wp_get_session_token();
-
         $cases = [
             [
                 "hasher"   => new NonceHasher( "test" ),
                 "action"   => "test",
                 "lifetime" => DAY_IN_SECONDS,
-                "user"     => $current_user,
-                "token"    => $session_token
+                "user"     => wp_get_current_user(),
+                "token"    => wp_get_session_token()
             ],
             [
                 "hasher"   => new NonceHasher( "test", 20 ),
                 "action"   => "test",
                 "lifetime" => 20,
-                "user"     => $current_user,
-                "token"    => $session_token
+                "user"     => wp_get_current_user(),
+                "token"    => wp_get_session_token()
             ],
             [
                 "hasher"   => new NonceHasher( "test", 20, $mock_user ),
                 "action"   => "test",
                 "lifetime" => 20,
                 "user"     => $mock_user,
-                "token"    => $session_token
+                "token"    => wp_get_session_token()
             ],
             [
                 "hasher"   => new NonceHasher( "test", 20, $mock_user,
