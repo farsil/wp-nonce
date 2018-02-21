@@ -35,18 +35,23 @@ class NonceHasher {
     }
 
     public function tick() {
-        $life = apply_filters( 'nonce_life', $this->lifetime );
+        $lifetime = apply_filters( 'nonce_life', $this->lifetime );
 
-        return ceil( time() / ( $life / 2 ) );
+        return ceil( time() / ( $lifetime / 2 ) );
     }
 
     protected function hash( $tick ) {
         $uid = (int) $this->user->ID;
         if ( ! $uid ) {
-            $uid = apply_filters( 'nonce_user_logged_out', $uid, $this->action );
+            $uid = apply_filters( 'nonce_user_logged_out',
+                $uid, $this->action );
         }
 
-        return substr( wp_hash( $tick . '|' . $this->action . '|' . $uid .
-                                '|' . $this->token, 'nonce' ), - 12, 10 );
+        return substr(
+            wp_hash( $tick . '|' . $this->action . '|' . $uid .
+                     '|' .$this->token,
+            'nonce' ),
+            - 12, 10
+        );
     }
 }
