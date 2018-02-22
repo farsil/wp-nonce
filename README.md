@@ -36,12 +36,12 @@ require_once 'wp-load.php';
 require_once 'vendor/autoload.php';
 
 // Generate a new nonce. Default lifetime is 1 day.
-$gen = new Wordpress/Nonce_Generator( 'test-nonce' );
+$gen = new Wordpress\Nonce_Generator( 'test-nonce' );
 $token = $gen->generate();
 
 // In order to properly validate the generated token, the constructor parameters
 // need to match those used in Nonce_Generator.
-$val = new Wordpress/Nonce_Validator( 'test-nonce' );
+$val = new Wordpress\Nonce_Validator( 'test-nonce' );
 echo $val->verify( $token );
 ```
 Expected Output:
