@@ -1,14 +1,12 @@
 <?php
 
-namespace Wordpress\Nonce\Test;
-
 use PHPUnit\Framework\TestCase;
-use Wordpress\Nonce\AuthException;
-use Wordpress\Nonce\NonceValidator;
+use Wordpress\AuthException;
+use Wordpress\NonceValidator;
 
 class NonceValidatorTest extends TestCase {
     public function test__construct() {
-        $mock_user     = new \stdClass();
+        $mock_user     = new \WP_User();
         $mock_user->ID = 2;
         $mock_token    = "h324abc4";
 

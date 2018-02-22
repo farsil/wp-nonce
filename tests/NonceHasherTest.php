@@ -1,13 +1,11 @@
 <?php
 
-namespace Wordpress\Nonce\Test;
-
 use PHPUnit\Framework\TestCase;
-use Wordpress\Nonce\NonceHasher;
+use Wordpress\NonceHasher;
 
 class NonceHasherTest extends TestCase {
     public function test__construct() {
-        $mock_user     = new \stdClass();
+        $mock_user     = new \WP_User();
         $mock_user->ID = 2;
         $mock_token    = "h324abc4";
 
@@ -93,7 +91,7 @@ class NonceHasherTest extends TestCase {
     }
 
     public function testGetNonce() {
-        $mock_user     = new \stdClass();
+        $mock_user     = new \WP_User();
         $mock_user->ID = 2;
 
         $closure = function ( $uid ) {
@@ -193,7 +191,7 @@ class NonceHasherTest extends TestCase {
     private static function accessibleGetNonce( $hasher ) {
         try {
             $method = new \ReflectionMethod(
-                'Wordpress\Nonce\NonceHasher', 'getNonce' );
+                'Wordpress\NonceHasher', 'getNonce' );
             $method->setAccessible( true );
 
             return function ( $tick ) use ( $method, $hasher ) {
@@ -205,7 +203,7 @@ class NonceHasherTest extends TestCase {
     }
 
     public function testAccessors() {
-        $mock_user     = new \stdClass();
+        $mock_user     = new \WP_User();
         $mock_user->ID = 2;
         $mock_token    = "h324abc4";
 

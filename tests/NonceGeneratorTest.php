@@ -1,13 +1,11 @@
 <?php
 
-namespace Wordpress\Nonce\Test;
-
 use PHPUnit\Framework\TestCase;
-use Wordpress\Nonce\NonceGenerator;
+use Wordpress\NonceGenerator;
 
 class NonceGeneratorTest extends TestCase {
     public function test__construct() {
-        $mock_user     = new \stdClass();
+        $mock_user     = new \WP_User();
         $mock_user->ID = 2;
         $mock_token    = "h324abc4";
 
@@ -69,7 +67,7 @@ class NonceGeneratorTest extends TestCase {
     }
 
     public function testGenerate() {
-        $mock_user     = new \stdClass();
+        $mock_user     = new \WP_User();
         $mock_user->ID = 2;
 
         $closure = function ( $uid ) {

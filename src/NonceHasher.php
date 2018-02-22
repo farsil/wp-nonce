@@ -1,16 +1,58 @@
 <?php
 
-namespace Wordpress\Nonce;
+namespace Wordpress;
 
+/**
+ * Class NonceHasher provides methods to handle cryptographic nonces. It is the
+ * base class of NonceGenerator and NonceValidator, and should never be used
+ * as it is.
+ * @package Wordpress
+ */
 class NonceHasher {
+    /**
+     * User object, used to add context to the nonces.
+     *
+     * @var \WP_User
+     */
     private $user;
+
+    /**
+     * Session token, used to add context to the nonces.
+     *
+     * @var string
+     */
     private $token;
+
+
+    /**
+     * The validity interval of nonces, in seconds.
+     *
+     * @var int
+     */
     private $lifetime;
+
+    /**
+     * Scalar value to add context to the nonces.
+     *
+     * @var string|int
+     */
     private $action;
 
+    /**
+     * NonceHasher Constructor.
+     *
+     * @param string|int $action [optional] Scalar value to add context to the
+     * nonces. Default '-1'.
+     * @param int $lifetime [optional] The validity interval of nonces, in
+     * seconds. Default is DAY_IN_SECONDS (86400, one day).
+     * @param \WP_User $user [optional] User object, used to add context to the
+     * nonces. Default wp_get_current_user().
+     * @param string $token [optional] Session token, used to add context to the
+     * nonces. Default wp_get_session_token().
+     */
     public function __construct(
-        $action = - 1, $lifetime = DAY_IN_SECONDS,
-        $user = null, $token = null
+        $action = - 1, int $lifetime = DAY_IN_SECONDS,
+        \WP_User $user = null, string $token = null
     ) {
         $this->user     = $user ?: wp_get_current_user();
         $this->token    = $token ?: wp_get_session_token();
@@ -18,29 +60,65 @@ class NonceHasher {
         $this->lifetime = $lifetime;
     }
 
+    /**
+     * Returns the value used to add context to the nonces.
+     *
+     * @return string|int The action.
+     */
     public function getAction() {
         return $this->action;
     }
 
-    public function getLifetime() {
+    /**
+     * Returns the validity interval of nonces.
+     *
+     * @return int The lifetime.
+     */
+    public function getLifetime(): int {
         return $this->lifetime;
     }
 
-    public function getUser() {
+    /**
+     * Returns the user object used to add context to the nonces.
+     *
+     * @return \WP_User The user object.
+     */
+    public function getUser(): \WP_User {
         return $this->user;
     }
 
-    public function getToken() {
+    /**
+     * Returns the session token used to add context to the nonces.
+     *
+     * @return string The session token.
+     */
+    public function getToken(): string {
         return $this->token;
     }
 
+    /**
+     * Get the time-dependent variable for nonce creation.
+     *
+     * A nonce has a lifespan of two ticks. Nonces in their second tick may be
+     * updated, e.g. by autosave.
+     *
+     * @return float Float value rounded up to the next highest integer.
+     */
     public function tick() {
         $lifetime = apply_filters( 'nonce_life', $this->lifetime );
 
         return ceil( time() / ( $lifetime / 2 ) );
     }
 
-    protected function getNonce( $tick ) {
+    /**
+     * Creates a nonce. If $tick is the same, it is guaranteed to return the
+     * same nonce.
+     *
+     * @param $tick int The time-dependent variable for nonce creation.
+     *
+     * @return string The token.
+     */
+    protected function getNonce( int $tick ): string {
         $uid = (int) $this->user->ID;
         if ( ! $uid ) {
             $uid = apply_filters( 'nonce_user_logged_out',
@@ -51,7 +129,17 @@ class NonceHasher {
                            '|' . $this->token );
     }
 
-    public static function hash( $data ) {
+    /**
+     * Hashes the provided data. It is used internally to build nonces out of
+     * context information.
+     *
+     * @static
+     *
+     * @param $data string The data to be hashed.
+     *
+     * @return string Hash of the data.
+     */
+    public static function hash( $data ): string {
         return substr( wp_hash( $data, 'nonce' ), - 12, 10 );
     }
 }

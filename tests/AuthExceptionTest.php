@@ -1,12 +1,13 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Wordpress\Nonce\AuthException;
+use Wordpress\AuthException;
 
 class AuthExceptionTest extends TestCase {
 
     public function test__construct() {
-        $ex    = new Exception();
+        $ex = new Exception();
+
         $cases = [
             [
                 "exception" => new AuthException( "test" ),
