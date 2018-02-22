@@ -5,7 +5,7 @@
   "keywords": ["oop", "nonce", "wordpress"],
   "repositories": [
     {
-      "type": "vcs",
+      "type": "git",
       "url": "https://github.com/farsil/wp-nonce"
     }
   ],
