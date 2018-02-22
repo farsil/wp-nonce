@@ -25,6 +25,7 @@ documentation for additional details.
 
 ## Example
 ```
+<?php
 // We don't need to load themes
 define( 'WP_USE_THEMES', false );
 
@@ -54,5 +55,5 @@ Expected Output:
 includes a `phpunit.xml.dist` file, all you need to do is to navigate to the 
 project root, and run:
 ```
-php /path/to/phpunit.phar --include-path=/path/to/wordpress
+$ php /path/to/phpunit.phar --include-path=/path/to/wordpress
 ```
