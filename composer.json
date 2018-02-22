@@ -19,8 +19,6 @@
     "php": ">=7.0"
   },
   "autoload": {
-    "psr-4": {
-      "Wordpress\\": "src/"
-    }
+    "classmap": ["src/"]
   }
 }

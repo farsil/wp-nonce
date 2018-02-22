@@ -3,12 +3,12 @@
 namespace Wordpress;
 
 /**
- * Class NonceValidator provides methods to validate cryptographic tokens.
+ * Class Nonce_Validator provides methods to validate cryptographic tokens.
  * @package Wordpress
  */
-class NonceValidator extends NonceHasher {
+class Nonce_Validator extends Nonce_Hasher {
     /**
-     * NonceValidator Constructor.
+     * Nonce_Validator Constructor.
      *
      * To correctly validate nonces, these parameters needs to be specular of
      * those passed in the constructor of NonceGenerator.
@@ -34,7 +34,7 @@ class NonceValidator extends NonceHasher {
      *
      * To avoid security exploits.
      *
-     * @throws AuthException Thrown if validation fails, and the user does
+     * @throws Auth_Exception Thrown if validation fails, and the user does
      * not come from an another admin page.
      *
      * @param string $query_arg [optional] Key to check for nonce in
@@ -44,18 +44,18 @@ class NonceValidator extends NonceHasher {
      * and generated in the first half of its lifetime, 2 if the nonce is valid
      * and generated in the second half of its lifetime.
      */
-    public function checkAdminReferer( string $query_arg = "_wpnonce" ) {
+    public function check_admin_referer( string $query_arg = '_wpnonce' ) {
         $admin_url = strtolower( admin_url() );
         $referer   = strtolower( wp_get_referer() );
 
         $result = isset( $_REQUEST[ $query_arg ] ) ?
             $this->verify( $_REQUEST[ $query_arg ] ) : false;
 
-        do_action( 'check_admin_referer', $this->getAction(), $result );
+        do_action( 'check_admin_referer', $this->get_action(), $result );
 
         if ( ! $result && strpos( $referer, $admin_url ) !== 0 ) {
-            throw new AuthException( $this->getAction(),
-                "Referer does not come from an admin URL."
+            throw new Auth_Exception( $this->get_action(),
+                'Referer does not come from an admin URL.'
             );
         }
 
@@ -82,16 +82,16 @@ class NonceValidator extends NonceHasher {
         }
 
         $tick = $this->tick();
-        if ( hash_equals( $this->getNonce( $tick ), $nonce ) ) {
+        if ( hash_equals( $this->get_nonce( $tick ), $nonce ) ) {
             return 1;
         }
-        if ( hash_equals( $this->getNonce( $tick - 1 ), $nonce ) ) {
+        if ( hash_equals( $this->get_nonce( $tick - 1 ), $nonce ) ) {
             return 2;
         }
 
         do_action(
             'wp_verify_nonce_failed',
-            $nonce, $this->getAction(), $this->getUser(), $this->getToken()
+            $nonce, $this->get_action(), $this->get_user(), $this->get_token()
         );
 
         return false;
@@ -109,7 +109,7 @@ class NonceValidator extends NonceHasher {
      * and generated in the first half of its lifetime, 2 if the nonce is valid
      * and generated in the second half of its lifetime.
      */
-    public function checkAjaxReferer( $query_arg = false ) {
+    public function check_ajax_referer( $query_arg = false ) {
         $nonce = '';
 
         if ( $query_arg && isset( $_REQUEST[ $query_arg ] ) ) {
@@ -121,7 +121,7 @@ class NonceValidator extends NonceHasher {
         }
 
         $result = $this->verify( $nonce );
-        do_action( 'check_ajax_referer', $this->getAction(), $result );
+        do_action( 'check_ajax_referer', $this->get_action(), $result );
 
         return $result;
     }

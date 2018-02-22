@@ -3,12 +3,12 @@
 namespace Wordpress;
 
 /**
- * Class NonceGenerator provides methods to generate cryptographic tokens.
+ * Class Nonce_Generator provides methods to generate cryptographic tokens.
  * @package Wordpress
  */
-class NonceGenerator extends NonceHasher {
+class Nonce_Generator extends Nonce_Hasher {
     /**
-     * NonceGenerator Constructor.
+     * Nonce_Generator Constructor.
      *
      * @param string|int $action [optional] Scalar value to add context to the
      * nonce. Default '-1'.
@@ -35,7 +35,7 @@ class NonceGenerator extends NonceHasher {
      * @return string Escaped URL with nonce action added.
      */
     public function url(
-        string $action_url, string $name = "_wpnonce"
+        string $action_url, string $name = '_wpnonce'
     ): string {
         $action_url = str_replace( '&amp;', '&', $action_url );
 
@@ -51,7 +51,7 @@ class NonceGenerator extends NonceHasher {
      * @return string The token.
      */
     public function generate(): string {
-        return $this->getNonce( $this->tick() );
+        return $this->get_nonce( $this->tick() );
     }
 
     /**
@@ -77,12 +77,12 @@ class NonceGenerator extends NonceHasher {
      * @return string Nonce field HTML markup.
      */
     public function field(
-        string $name = "_wpnonce", bool $referer = true, bool $echo = true
+        string $name = '_wpnonce', bool $referer = true, bool $echo = true
     ): string {
         $name        = esc_attr( $name );
-        $nonce_field = '<input type="hidden" id="' . $name .
-                       '" name="' . $name . '" value="' . $this->generate() .
-                       '" />';
+        $nonce_field = "<input type='hidden' id='" . $name .
+                       "' name='" . $name . "' value='" . $this->generate() .
+                       "' />";
 
         if ( $referer ) {
             $nonce_field .= wp_referer_field( false );

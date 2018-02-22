@@ -3,12 +3,12 @@
 namespace Wordpress;
 
 /**
- * Class NonceHasher provides methods to handle cryptographic nonces. It is the
- * base class of NonceGenerator and NonceValidator, and should never be used
- * as it is.
+ * Class Nonce_Hasher provides methods to handle cryptographic nonces. It is the
+ * base class of NonceGenerator and NonceValidator, and is not necessary to
+ * instantiate explicitly.
  * @package Wordpress
  */
-class NonceHasher {
+class Nonce_Hasher {
     /**
      * User object, used to add context to the nonces.
      *
@@ -39,7 +39,7 @@ class NonceHasher {
     private $action;
 
     /**
-     * NonceHasher Constructor.
+     * Nonce_Hasher Constructor.
      *
      * @param string|int $action [optional] Scalar value to add context to the
      * nonces. Default '-1'.
@@ -65,7 +65,7 @@ class NonceHasher {
      *
      * @return string|int The action.
      */
-    public function getAction() {
+    public function get_action() {
         return $this->action;
     }
 
@@ -74,7 +74,7 @@ class NonceHasher {
      *
      * @return int The lifetime.
      */
-    public function getLifetime(): int {
+    public function get_lifetime(): int {
         return $this->lifetime;
     }
 
@@ -83,7 +83,7 @@ class NonceHasher {
      *
      * @return \WP_User The user object.
      */
-    public function getUser(): \WP_User {
+    public function get_user(): \WP_User {
         return $this->user;
     }
 
@@ -92,7 +92,7 @@ class NonceHasher {
      *
      * @return string The session token.
      */
-    public function getToken(): string {
+    public function get_token(): string {
         return $this->token;
     }
 
@@ -118,7 +118,7 @@ class NonceHasher {
      *
      * @return string The token.
      */
-    protected function getNonce( int $tick ): string {
+    protected function get_nonce( int $tick ): string {
         $uid = (int) $this->user->ID;
         if ( ! $uid ) {
             $uid = apply_filters( 'nonce_user_logged_out',
