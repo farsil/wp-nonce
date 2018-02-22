@@ -1,6 +1,4 @@
 # wp-nonce
-[![Build Status](https://travis-ci.org/farsil/wp-nonce.svg?branch=master)](https://travis-ci.org/farsil/wp-nonce) 
-[![Code Coverage](https://codecov.io/gh/farsil/wp-nonce/branch/master/graph/badge.svg)](https://codecov.io/gh/farsil/wp-nonce)
 
 `wp-nonce` is a replacement library for wordpress nonces written in 
 [PHP](https://php.net/). It aims to provide an object oriented interface that
